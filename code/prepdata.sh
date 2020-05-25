@@ -34,12 +34,12 @@ fi
 
 if [ $sub -gt 121 ]; then
   singularity run --cleanenv -B $dsroot:/out -B $sourcedata:/sourcedata \
-  /data/tools/heudiconv-0.5.4.simg -d /sourcedata/dicoms/SMITH-AgingDM-{subject}/*/DICOM/*.dcm -s $sub \
-  -f /out/code/heuristics.py -c dcm2niix -b --minmeta -o /out/bids
+  /data/tools/heudiconv-0.8.0.simg -d /sourcedata/dicoms/SMITH-AgingDM-{subject}/*/DICOM/*.dcm -s $sub \
+  -f /out/code/heuristics.py -c dcm2niix -b --minmeta --datalad -o /out/bids
 else
   singularity run --cleanenv -B $dsroot:/out -B $sourcedata:/sourcedata \
-  /data/tools/heudiconv-0.5.4.simg -d /sourcedata/dicoms/SMITH-AgingDM-{subject}/scans/*/DICOM/*.dcm -s $sub \
-  -f /out/code/heuristics.py -c dcm2niix -b --minmeta -o /out/bids
+  /data/tools/heudiconv-0.8.0.simg -d /sourcedata/dicoms/SMITH-AgingDM-{subject}/scans/*/DICOM/*.dcm -s $sub \
+  -f /out/code/heuristics.py -c dcm2niix -b --minmeta --datalad -o /out/bids
 fi
 
 # run Jeff's code to fix field map, but first correct permissions
@@ -57,7 +57,7 @@ mv -f ${bidsroot}/sub-${sub}/anat/sub-${sub}_T1w_defaced.nii.gz ${bidsroot}/sub-
 pydeface.py ${bidsroot}/sub-${sub}/anat/sub-${sub}_T2w.nii.gz
 mv -f ${bidsroot}/sub-${sub}/anat/sub-${sub}_T2w_defaced.nii.gz ${bidsroot}/sub-${sub}/anat/sub-${sub}_T2w.nii.gz
 
-
+datalad save . -m 'deface $sub'
 
 # PART 3: Run MRIQC on subject
 
@@ -66,11 +66,19 @@ mv -f ${bidsroot}/sub-${sub}/anat/sub-${sub}_T2w_defaced.nii.gz ${bidsroot}/sub-
 if [ ! -d $dsroot/derivatives/mriqc ]; then
 	mkdir -p $dsroot/derivatives/mriqc
 fi
+scratchdir=/data/scratch/`whoami`
+if [ ! -d $scratchdir ]; then
+	mkdir -p $scratchdir
+fi
+
 
 singularity run --cleanenv \
 -B $dsroot/bids:/data \
 -B $dsroot/derivatives/mriqc:/out \
--B /data/scratch:/scratch \
-/data/tools/mriqc-0.15.1.simg \
+-B $scratchdir:/scratch \
+/data/tools/mriqc-0.15.2.simg \
 /data /out \
-participant --participant_label $sub --fft-spikes-detector --ica -w /scratch
+participant --participant_label $sub -w /scratch
+
+datalad save . -m 'add mriqc for $sub'
+
