@@ -8,6 +8,7 @@ for subrun in "130 5" "131 5" "132 5"; do
 	
 	datalad run -m "run mriqc for $sub" \
 	--input 'bids/*' \
+	--output "bids/sub-${sub}/*"
 	--output 'derivatives/*' \
 	"bash code/mriqc.sh ${sub}"
 	sleep 5s
