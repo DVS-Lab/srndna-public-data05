@@ -1,0 +1,54 @@
+Node: mriqc_wf.anatMRIQC.SpatialNormalization.SpatialNormalization
+Working directory: /scratch/mriqc_wf/anatMRIQC/SpatialNormalization/_in_file_..data..sub-130..anat..sub-130_T2w.nii.gz/SpatialNormalization
+
+Node inputs:
+
+compress_report = auto
+explicit_masking = True
+flavor = testing
+float = False
+initial_moving_transform = <undefined>
+lesion_mask = <undefined>
+moving = T1w
+moving_image = /scratch/mriqc_wf/anatMRIQC/AFNISkullStripWorkflow/_in_file_..data..sub-130..anat..sub-130_T2w.nii.gz/inu_n4/sub-130_T2w_conformed_corrected.nii.gz
+moving_mask = /scratch/mriqc_wf/anatMRIQC/AFNISkullStripWorkflow/_in_file_..data..sub-130..anat..sub-130_T2w.nii.gz/binarize/sub-130_T2w_conformed_calc_mask.nii.gz
+num_threads = 48
+orientation = RAS
+out_report = report.svg
+reference = T2w
+reference_image = <undefined>
+reference_mask = /home/bidsapp/.cache/templateflow/tpl-MNI152NLin2009cAsym/tpl-MNI152NLin2009cAsym_res-02_desc-brain_mask.nii.gz
+settings = <undefined>
+template = MNI152NLin2009cAsym
+template_resolution = 2
+template_spec = <undefined>
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/templateflow/api.py", line 192, in _s3_get
+    f.write(data)
+OSError: [Errno 28] No space left on device
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/plugins/multiproc.py", line 67, in run_node
+    result["result"] = node.run(updatehash=updatehash)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 516, in run
+    result = self._run_interface(execute=True)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 635, in _run_interface
+    return self._run_command(execute)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/pipeline/engine/nodes.py", line 741, in _run_command
+    result = self._interface.run(cwd=outdir)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/nipype/interfaces/base/core.py", line 397, in run
+    runtime = self._run_interface(runtime)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/niworkflows/interfaces/mni.py", line 125, in _run_interface
+    ants_args = self._get_ants_args()
+  File "/usr/local/miniconda/lib/python3.7/site-packages/niworkflows/interfaces/mni.py", line 354, in _get_ants_args
+    default_resolution=default_resolution)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/niworkflows/utils/misc.py", line 53, in get_template_specs
+    tpl_target_path = get_template(in_template, **template_spec)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/templateflow/api.py", line 67, in get
+    _s3_get(filepath)
+  File "/usr/local/miniconda/lib/python3.7/site-packages/templateflow/api.py", line 192, in _s3_get
+    f.write(data)
+OSError: [Errno 28] No space left on device
